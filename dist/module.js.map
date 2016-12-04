@@ -1,0 +1,1 @@
+{"version":3,"sources":["../src/module.js"],"names":["TrendStatPanelCtrl"],"mappings":";;;;;;;;AAAQA,wB,SAAAA,kB;;;2BAGNA,kB","file":"module.js","sourcesContent":["import {TrendStatPanelCtrl} from  './ctrl';\n\nexport {\n  TrendStatPanelCtrl as PanelCtrl\n};\n"]}

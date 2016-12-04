@@ -1,0 +1,26 @@
+
+md-card md-card-header {
+  background-color: #252525;
+  text-align: left;
+}
+
+md-card md-card-title {
+  background-color: #252525;
+  text-align: left;
+}
+
+md-card md-card-content {
+  background-color: #252525;
+  text-align: left;
+}
+md-icon {
+  height: inherit !important;
+}
+
+/* md-grid-list md-grid-tile {
+  position: relative;
+}
+md-grid-list md-grid-tile md-grid-tile-footer {
+  position: relative;
+}
+*/

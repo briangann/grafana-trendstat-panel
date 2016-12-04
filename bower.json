@@ -1,0 +1,31 @@
+{
+  "name": "briangann-trendstat-panel",
+  "description": "Trending Statistic Panel for Grafana",
+  "main": "",
+  "authors": [
+    "Brian Gann <bkgann@gmail.com>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "grafana trending"
+  ],
+  "homepage": "https://github.com/briangann/grafana-trendstat-panel",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.9",
+    "angular-animate": "^1.5.9",
+    "angular-aria": "^1.5.9",
+    "angular-messages": "^1.5.0",
+    "angular-ui-bootstrap": "^2.0.2",
+    "angular-material": "^1.1.0",
+    "bootstrap": "^3.3.7",
+    "font-awesome": "^4.7.0"
+  }
+}
