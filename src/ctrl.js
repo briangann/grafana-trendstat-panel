@@ -6,6 +6,8 @@ import $ from 'jquery';
 import kbn from 'app/core/utils/kbn';
 import config from 'app/core/config';
 import TimeSeries from 'app/core/time_series2';
+import 'jquery.flot';
+import 'jquery.flot.gauge';
 
 import './libs/angular-aria/angular-aria.min.js';
 import './libs/angular-animate/angular-animate.min.js';
@@ -13,14 +15,44 @@ import './libs/angular-material/angular-material.min.js';
 import './libs/angular-material/angular-material.min.css!';
 import './css/font-awesome.min.css!';
 import './css/panel.css!';
-
+import { ICONS_TREND_UP, ICONS_TREND_DOWN, ICONS_TREND_NONE } from './icons';
 
 const panelDefaults = {
   unitFormats: kbn.getUnitFormats(),
   trendstat:  {
-    subtext: '',
+    colors: ["rgba(245, 54, 54, 0.9)", "rgba(237, 129, 40, 0.89)", "rgba(50, 172, 45, 0.97)"],
+    colorBackground: false,
+    colorIcon: false,
+    colorValue: false,
+    leftSideSubtext: 'Updated:',
     leftSideShowSubtext: true,
+    leftSideSubtextFontSize: '60%',
+    leftSideShowTimestamp: true,
     rightSideShowSubtext: true,
+    rightSideSubTextFontSize: '60%',
+    rightSideShowTimestamp: true,
+    rightSideValueFontType: '',
+    rightSideValueFontSize: '80%',
+    rightSidePrefix: '',
+    rightSidePrefixFontSize: '60%',
+    rightSidePostfix: '',
+    rightSidePostfixFontSize: '60%',
+    rightSideDecimals: 2,
+    trendMethod: 'AVG',
+    thresholds: '',
+    splitDisplay: true,
+    showDivider: true,
+    dividerColor: 'rgb(109, 109, 109)',
+    splitRatio: 0.6,
+    trendIconUp: 'fa-arrow-circle-up',
+    trendIconDown: 'fa-arrow-circle-down',
+    trendIconNone: 'fa-fw',
+    trendUpFontSize: '160%',
+    trendDownFontSize: '160%',
+    trendNoneFontSize: '160%',
+    trendUpFillColor: 'rgba(245, 54, 54, 0.9)',
+    trendDownFillColor: 'rgba(50, 172, 45, 0.97)',
+    trendNoneFillColor: 'rgb(0,0,0)'
   },
   links: [],
   datasource: null,
@@ -29,14 +61,14 @@ const panelDefaults = {
   targets: [{}],
   cacheTimeout: null,
   format: 'none',
-  valueFontSize: 28,
+  valueFontSize: '70%',
   valueFontType: 'default',
   valueFooterFontSize: 12,
   valueFooterFontType: 'default',
   prefix: '',
-  prefixFontSize: 28,
+  prefixFontSize: '60%',
   postfix: '',
-  postfixFontSize: 28,
+  postfixFontSize: '60%',
   nullText: null,
   decimals: 2, // decimal precision
   valueMaps: [
@@ -96,8 +128,6 @@ export class TrendStatPanelCtrl extends MetricsPanelCtrl {
     this.http = $http;
     this.valueNameOptions = ['min','max','avg', 'current', 'total', 'name', 'first', 'delta', 'range'];
     this.panel.currentValueFormatted = "";
-    this.panel.currentValueFooterText = "Web Visits from Social Media";
-    this.panel.titleText = "Total Social Media Conversations (Last 30 Days)";
     this.fontSizesPx = [
       '4px', '5px', '6px', '7px', '8px', '9px', '10px',
       '11px', '12px', '13px', '14px', '15px', '16px', '17px', '18px', '19px', '20px',
@@ -107,6 +137,29 @@ export class TrendStatPanelCtrl extends MetricsPanelCtrl {
     this.fontSizesPct = [
       '10%', '20%', '30%', '40%', '50%', '60%', '70%', '80%', '90%', '100%',
       '110%', '120', '130%', '140%', '150%', '160%', '170%', '180%', '190%', '200%'];
+    this.fontTypes = [
+      'Arial', 'Avant Garde', 'Bookman',
+      'Consolas', 'Courier', 'Courier New',
+      'Garamond', 'Helvetica', 'Helvetica Neue', 'Open Sans',
+      'Palatino', 'sans-serif', 'Times', 'Times New Roman',
+      'Verdana'
+    ];
+    this.panel.trendstat.rightSideValueFontType = this.fontTypes[7];
+    this.panel.valueFontSize = this.fontSizesPct[7];
+    this.panel.prefixFontSize = this.fontSizesPct[5];
+    this.panel.postfixFontSize = this.fontSizesPct[5];
+    this.panel.trendstat.leftSideSubtextFontSize = this.fontSizesPct[5];
+    this.panel.trendstat.rightSideSubtextFontSize = this.fontSizesPct[5];
+    this.panel.trendstat.rightSidePrefixFontSize = this.fontSizesPct[5];
+    this.panel.trendstat.rightSidePostfixFontSize = this.fontSizesPct[5];
+    this.panel.trendstat.rightSideValueFontSize = this.fontSizesPct[9];
+    this.trendMethods = [
+      'AVG',
+    ];
+    this.panel.trendstat.trendMethod = this.trendMethods[0];
+    this.trendStatIconsUp = ICONS_TREND_UP;
+    this.trendStatIconsDown = ICONS_TREND_DOWN;
+    this.trendStatIconsNone = ICONS_TREND_NONE;
     this.events.on('data-received', this.onDataReceived.bind(this));
     this.events.on('data-error', this.onDataError.bind(this));
     this.events.on('data-snapshot-load', this.onDataReceived.bind(this));
@@ -362,6 +415,13 @@ export class TrendStatPanelCtrl extends MetricsPanelCtrl {
     this.render();
   }
 
+  invertTrendColorOrder() {
+    var tmp = this.panel.trendstat.colors[0];
+    this.panel.trendstat.colors[0] = this.panel.trendstat.colors[2];
+    this.panel.trendstat.colors[2] = tmp;
+    this.render();
+  }
+
   getTrendIcon(historicalValue, currentValue) {
     var icon = "fa fa-square";
     if (currentValue > historicalValue) {
@@ -480,13 +540,16 @@ export class TrendStatPanelCtrl extends MetricsPanelCtrl {
         panel.valueColor = '';
       }
 
+      $(".trendstat-panel-left-side-sparklines").remove();
       if (panel.sparkline.show) {
         addSparkline();
       }
 
+      $(".trendstat-panel-left-side-gauge").remove();
       if (panel.gauge.show) {
         addGauge();
       }
+      panel.trendstat.leftSideTimestamp = getCurrentTime();
       //elem.toggleClass('pointer', panel.links.length > 0);
 
       //if (panel.links.length > 0) {
@@ -496,6 +559,10 @@ export class TrendStatPanelCtrl extends MetricsPanelCtrl {
       //}
     } // end render()
 
+    function getCurrentTime() {
+      var d = new Date();
+      return d.toISOString();
+    }
     function applyColoringThresholds(value, valueString) {
       if (!panel.colorValue) {
         return valueString;

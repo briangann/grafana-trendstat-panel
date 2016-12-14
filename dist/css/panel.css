@@ -17,6 +17,10 @@ md-icon {
   height: inherit !important;
 }
 
+.trendstat-icons {
+  font-family: 'FontAwesome', 'sans-serif';
+}
+
 /* md-grid-list md-grid-tile {
   position: relative;
 }

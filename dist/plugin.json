@@ -1,6 +1,6 @@
 {
     "type": "panel",
-    "name": "TrendStat Panel",
+    "name": "TrendStat",
     "id": "briangann-trendstat-panel",
     "info": {
         "description": "TrendStat panel for Grafana",
@@ -10,8 +10,8 @@
         },
         "keywords": ["table", "panel"],
         "logos": {
-            "small": "img/.svg",
-            "large": "img/.svg"
+            "small": "img/telescope.svg",
+            "large": "img/telescope.svg"
         },
         "links": [{
             "name": "Project site",
@@ -34,7 +34,7 @@
             "path": "screenshots/thresholding.png"
         }],
         "version": "0.0.1",
-        "updated": "2016-11-25"
+        "updated": "2016-12-12"
     },
 
     "dependencies": {

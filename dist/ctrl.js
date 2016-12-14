@@ -1,9 +1,9 @@
 'use strict';
 
-System.register(['app/plugins/sdk', 'lodash', 'jquery', 'app/core/utils/kbn', 'app/core/config', 'app/core/time_series2', './libs/angular-aria/angular-aria.min.js', './libs/angular-animate/angular-animate.min.js', './libs/angular-material/angular-material.min.js', './libs/angular-material/angular-material.min.css!', './css/font-awesome.min.css!', './css/panel.css!'], function (_export, _context) {
+System.register(['app/plugins/sdk', 'lodash', 'jquery', 'app/core/utils/kbn', 'app/core/config', 'app/core/time_series2', 'jquery.flot', 'jquery.flot.gauge', './libs/angular-aria/angular-aria.min.js', './libs/angular-animate/angular-animate.min.js', './libs/angular-material/angular-material.min.js', './libs/angular-material/angular-material.min.css!', './css/font-awesome.min.css!', './css/panel.css!', './icons'], function (_export, _context) {
   "use strict";
 
-  var MetricsPanelCtrl, _, $, kbn, config, TimeSeries, _createClass, panelDefaults, TrendStatPanelCtrl;
+  var MetricsPanelCtrl, _, $, kbn, config, TimeSeries, ICONS_TREND_UP, ICONS_TREND_DOWN, ICONS_TREND_NONE, _createClass, panelDefaults, TrendStatPanelCtrl;
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -57,7 +57,11 @@ System.register(['app/plugins/sdk', 'lodash', 'jquery', 'app/core/utils/kbn', 'a
       config = _appCoreConfig.default;
     }, function (_appCoreTime_series) {
       TimeSeries = _appCoreTime_series.default;
-    }, function (_libsAngularAriaAngularAriaMinJs) {}, function (_libsAngularAnimateAngularAnimateMinJs) {}, function (_libsAngularMaterialAngularMaterialMinJs) {}, function (_libsAngularMaterialAngularMaterialMinCss) {}, function (_cssFontAwesomeMinCss) {}, function (_cssPanelCss) {}],
+    }, function (_jqueryFlot) {}, function (_jqueryFlotGauge) {}, function (_libsAngularAriaAngularAriaMinJs) {}, function (_libsAngularAnimateAngularAnimateMinJs) {}, function (_libsAngularMaterialAngularMaterialMinJs) {}, function (_libsAngularMaterialAngularMaterialMinCss) {}, function (_cssFontAwesomeMinCss) {}, function (_cssPanelCss) {}, function (_icons) {
+      ICONS_TREND_UP = _icons.ICONS_TREND_UP;
+      ICONS_TREND_DOWN = _icons.ICONS_TREND_DOWN;
+      ICONS_TREND_NONE = _icons.ICONS_TREND_NONE;
+    }],
     execute: function () {
       _createClass = function () {
         function defineProperties(target, props) {
@@ -80,9 +84,39 @@ System.register(['app/plugins/sdk', 'lodash', 'jquery', 'app/core/utils/kbn', 'a
       panelDefaults = {
         unitFormats: kbn.getUnitFormats(),
         trendstat: {
-          subtext: '',
+          colors: ["rgba(245, 54, 54, 0.9)", "rgba(237, 129, 40, 0.89)", "rgba(50, 172, 45, 0.97)"],
+          colorBackground: false,
+          colorIcon: false,
+          colorValue: false,
+          leftSideSubtext: 'Updated:',
           leftSideShowSubtext: true,
-          rightSideShowSubtext: true
+          leftSideSubtextFontSize: '60%',
+          leftSideShowTimestamp: true,
+          rightSideShowSubtext: true,
+          rightSideSubTextFontSize: '60%',
+          rightSideShowTimestamp: true,
+          rightSideValueFontType: '',
+          rightSideValueFontSize: '80%',
+          rightSidePrefix: '',
+          rightSidePrefixFontSize: '60%',
+          rightSidePostfix: '',
+          rightSidePostfixFontSize: '60%',
+          rightSideDecimals: 2,
+          trendMethod: 'AVG',
+          thresholds: '',
+          splitDisplay: true,
+          showDivider: true,
+          dividerColor: 'rgb(109, 109, 109)',
+          splitRatio: 0.6,
+          trendIconUp: 'fa-arrow-circle-up',
+          trendIconDown: 'fa-arrow-circle-down',
+          trendIconNone: 'fa-fw',
+          trendUpFontSize: '160%',
+          trendDownFontSize: '160%',
+          trendNoneFontSize: '160%',
+          trendUpFillColor: 'rgba(245, 54, 54, 0.9)',
+          trendDownFillColor: 'rgba(50, 172, 45, 0.97)',
+          trendNoneFillColor: 'rgb(0,0,0)'
         },
         links: [],
         datasource: null,
@@ -91,14 +125,14 @@ System.register(['app/plugins/sdk', 'lodash', 'jquery', 'app/core/utils/kbn', 'a
         targets: [{}],
         cacheTimeout: null,
         format: 'none',
-        valueFontSize: 28,
+        valueFontSize: '70%',
         valueFontType: 'default',
         valueFooterFontSize: 12,
         valueFooterFontType: 'default',
         prefix: '',
-        prefixFontSize: 28,
+        prefixFontSize: '60%',
         postfix: '',
-        postfixFontSize: 28,
+        postfixFontSize: '60%',
         nullText: null,
         decimals: 2, // decimal precision
         valueMaps: [{
@@ -155,10 +189,23 @@ System.register(['app/plugins/sdk', 'lodash', 'jquery', 'app/core/utils/kbn', 'a
           _this.http = $http;
           _this.valueNameOptions = ['min', 'max', 'avg', 'current', 'total', 'name', 'first', 'delta', 'range'];
           _this.panel.currentValueFormatted = "";
-          _this.panel.currentValueFooterText = "Web Visits from Social Media";
-          _this.panel.titleText = "Total Social Media Conversations (Last 30 Days)";
           _this.fontSizesPx = ['4px', '5px', '6px', '7px', '8px', '9px', '10px', '11px', '12px', '13px', '14px', '15px', '16px', '17px', '18px', '19px', '20px', '22px', '24px', '26px', '28px', '30px', '32px', '34px', '36px', '38px', '40px', '42px', '44px', '46px', '48px', '50px', '52px', '54px', '56px', '58px', '60px', '62px', '64px', '66px', '68px', '70px'];
           _this.fontSizesPct = ['10%', '20%', '30%', '40%', '50%', '60%', '70%', '80%', '90%', '100%', '110%', '120', '130%', '140%', '150%', '160%', '170%', '180%', '190%', '200%'];
+          _this.fontTypes = ['Arial', 'Avant Garde', 'Bookman', 'Consolas', 'Courier', 'Courier New', 'Garamond', 'Helvetica', 'Helvetica Neue', 'Open Sans', 'Palatino', 'sans-serif', 'Times', 'Times New Roman', 'Verdana'];
+          _this.panel.trendstat.rightSideValueFontType = _this.fontTypes[7];
+          _this.panel.valueFontSize = _this.fontSizesPct[7];
+          _this.panel.prefixFontSize = _this.fontSizesPct[5];
+          _this.panel.postfixFontSize = _this.fontSizesPct[5];
+          _this.panel.trendstat.leftSideSubtextFontSize = _this.fontSizesPct[5];
+          _this.panel.trendstat.rightSideSubtextFontSize = _this.fontSizesPct[5];
+          _this.panel.trendstat.rightSidePrefixFontSize = _this.fontSizesPct[5];
+          _this.panel.trendstat.rightSidePostfixFontSize = _this.fontSizesPct[5];
+          _this.panel.trendstat.rightSideValueFontSize = _this.fontSizesPct[9];
+          _this.trendMethods = ['AVG'];
+          _this.panel.trendstat.trendMethod = _this.trendMethods[0];
+          _this.trendStatIconsUp = ICONS_TREND_UP;
+          _this.trendStatIconsDown = ICONS_TREND_DOWN;
+          _this.trendStatIconsNone = ICONS_TREND_NONE;
           _this.events.on('data-received', _this.onDataReceived.bind(_this));
           _this.events.on('data-error', _this.onDataError.bind(_this));
           _this.events.on('data-snapshot-load', _this.onDataReceived.bind(_this));
@@ -432,6 +479,14 @@ System.register(['app/plugins/sdk', 'lodash', 'jquery', 'app/core/utils/kbn', 'a
             this.render();
           }
         }, {
+          key: 'invertTrendColorOrder',
+          value: function invertTrendColorOrder() {
+            var tmp = this.panel.trendstat.colors[0];
+            this.panel.trendstat.colors[0] = this.panel.trendstat.colors[2];
+            this.panel.trendstat.colors[2] = tmp;
+            this.render();
+          }
+        }, {
           key: 'getTrendIcon',
           value: function getTrendIcon(historicalValue, currentValue) {
             var icon = "fa fa-square";
@@ -553,13 +608,16 @@ System.register(['app/plugins/sdk', 'lodash', 'jquery', 'app/core/utils/kbn', 'a
                 panel.valueColor = '';
               }
 
+              $(".trendstat-panel-left-side-sparklines").remove();
               if (panel.sparkline.show) {
                 addSparkline();
               }
 
+              $(".trendstat-panel-left-side-gauge").remove();
               if (panel.gauge.show) {
                 addGauge();
               }
+              panel.trendstat.leftSideTimestamp = getCurrentTime();
               //elem.toggleClass('pointer', panel.links.length > 0);
 
               //if (panel.links.length > 0) {
@@ -569,6 +627,10 @@ System.register(['app/plugins/sdk', 'lodash', 'jquery', 'app/core/utils/kbn', 'a
               //}
             } // end render()
 
+            function getCurrentTime() {
+              var d = new Date();
+              return d.toISOString();
+            }
             function applyColoringThresholds(value, valueString) {
               if (!panel.colorValue) {
                 return valueString;
