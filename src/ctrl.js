@@ -26,17 +26,17 @@ const panelDefaults = {
     colorValue: false,
     leftSideSubtext: 'Updated:',
     leftSideShowSubtext: true,
-    leftSideSubtextFontSize: '60%',
+    leftSideSubtextFontSize: '100%',
     leftSideShowTimestamp: true,
     rightSideShowSubtext: true,
-    rightSideSubTextFontSize: '60%',
+    rightSideSubTextFontSize: '100%',
     rightSideShowTimestamp: true,
     rightSideValueFontType: '',
-    rightSideValueFontSize: '80%',
+    rightSideValueFontSize: '120%',
     rightSidePrefix: '',
-    rightSidePrefixFontSize: '60%',
+    rightSidePrefixFontSize: '120%',
     rightSidePostfix: '',
-    rightSidePostfixFontSize: '60%',
+    rightSidePostfixFontSize: '120%',
     rightSideDecimals: 2,
     trendMethod: 'AVG',
     thresholds: '',
@@ -136,7 +136,7 @@ export class TrendStatPanelCtrl extends MetricsPanelCtrl {
       '62px', '64px', '66px', '68px', '70px'];
     this.fontSizesPct = [
       '10%', '20%', '30%', '40%', '50%', '60%', '70%', '80%', '90%', '100%',
-      '110%', '120', '130%', '140%', '150%', '160%', '170%', '180%', '190%', '200%'];
+      '110%', '120%', '130%', '140%', '150%', '160%', '170%', '180%', '190%', '200%'];
     this.fontTypes = [
       'Arial', 'Avant Garde', 'Bookman',
       'Consolas', 'Courier', 'Courier New',

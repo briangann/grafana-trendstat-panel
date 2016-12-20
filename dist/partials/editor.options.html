@@ -2,54 +2,47 @@
 	<div class="section gf-form-group">
 		<h5 class="section-heading">Value</h5>
 
-		<div class="gf-form-inline">
-			<div class="gf-form">
+		<div class="gf-form">
 				<label class="gf-form-label width-6">Stat</label>
 				<div class="gf-form-select-wrapper width-10">
 					<select class="gf-form-input" ng-model="ctrl.panel.valueName" ng-options="f for f in ctrl.valueNameOptions" ng-change="ctrl.render()"></select>
 				</div>
-			</div>
-			<div class="gf-form">
-				<label class="gf-form-label width-6">Font size</label>
+				<label class="gf-form-label width-7">Font size<tip>Scaled when Gauge Active</tip></label>
 				<div class="gf-form-select-wrapper width-6">
 					<select class="gf-form-input" ng-model="ctrl.panel.valueFontSize" ng-options="f for f in ctrl.fontSizesPct" ng-change="ctrl.render()"></select>
 				</div>
-			</div>
 		</div>
 
-		<div class="gf-form-inline">
-			<div class="gf-form">
+		<div class="gf-form">
 				<label class="gf-form-label width-6">Prefix</label>
 				<input type="text" class="gf-form-input width-10" ng-model="ctrl.panel.prefix" ng-change="ctrl.render()" ng-model-onblur>
-				<label class="gf-form-label width-6">Font size</label>
+				<label class="gf-form-label width-7">Font size<tip>Disabled when Gauge Active</tip></label>
 				<div class="gf-form-select-wrapper width-6">
 					<select class="gf-form-input" ng-init="ctrl.panel.prefixFontSize = ctrl.panel.prefixFontSize || ctrl.fontSizesPct[5]" ng-model="ctrl.panel.prefixFontSize" ng-options="f for f in ctrl.fontSizesPct" ng-change="ctrl.render()"></select>
 				</div>
-			</div>
 		</div>
 
 		<div class="gf-form">
 			<label class="gf-form-label width-6">Postfix</label>
 			<input type="text" class="gf-form-input width-10" ng-model="ctrl.panel.postfix" ng-change="ctrl.render()" ng-model-onblur>
-			<label class="gf-form-label width-6">Font size</label>
+			<label class="gf-form-label width-7">Font size<tip>Disabled when Gauge Active</tip></label>
 			<div class="gf-form-select-wrapper width-6">
 				<select class="input-small gf-form-input" ng-model="ctrl.panel.postfixFontSize" ng-options="f for f in ctrl.fontSizesPct" ng-change="ctrl.render()"></select>
 			</div>
 		</div>
-		<div class="gf-form-inline">
+
+		<div class="gf-form">
 			<label class="gf-form-label width-6">Unit</label>
-				<div class="gf-form-dropdown-typeahead width-10" ng-model="ctrl.panel.format" dropdown-typeahead2="ctrl.panel.unitFormats" dropdown-typeahead-on-select="ctrl.setUnitFormat($subItem)">
-				</div>
-			<div class="gf-form max-width-11">
-				<label class="gf-form-label width-6">Decimals</label>
-				<input type="number" class="gf-form-input width-5" placeholder="auto" data-placement="right" bs-tooltip="'Override automatic decimal precision for legend and tooltips'" ng-model="ctrl.panel.decimals" ng-change="ctrl.render()" ng-model-onblur>
+			<div class="gf-form-dropdown-typeahead width-10" ng-model="ctrl.panel.format" dropdown-typeahead2="ctrl.panel.unitFormats" dropdown-typeahead-on-select="ctrl.setUnitFormat($subItem)">
 			</div>
+				<label class="gf-form-label width-7">Decimals</label>
+				<input type="number" class="gf-form-input width-6" placeholder="auto" data-placement="right" bs-tooltip="'Override automatic decimal precision for legend and tooltips'" ng-model="ctrl.panel.decimals" ng-change="ctrl.render()" ng-model-onblur>
 		</div>
 
 	</div>
 
 	<div class="section gf-form-group">
-		<h5 class="section-heading">Coloring</h5>
+		<h5 class="section-heading">Threshold Coloring</h5>
 		<div class="gf-form-inline">
 			<gf-form-switch class="gf-form" label-class="width-8" label="Background" checked="ctrl.panel.colorBackground" on-change="ctrl.render()"></gf-form-switch>
 			<gf-form-switch class="gf-form" label-class="width-4" label="Value" checked="ctrl.panel.colorValue" on-change="ctrl.render()"></gf-form-switch>

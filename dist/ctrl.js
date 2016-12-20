@@ -90,17 +90,17 @@ System.register(['app/plugins/sdk', 'lodash', 'jquery', 'app/core/utils/kbn', 'a
           colorValue: false,
           leftSideSubtext: 'Updated:',
           leftSideShowSubtext: true,
-          leftSideSubtextFontSize: '60%',
+          leftSideSubtextFontSize: '100%',
           leftSideShowTimestamp: true,
           rightSideShowSubtext: true,
-          rightSideSubTextFontSize: '60%',
+          rightSideSubTextFontSize: '100%',
           rightSideShowTimestamp: true,
           rightSideValueFontType: '',
-          rightSideValueFontSize: '80%',
+          rightSideValueFontSize: '120%',
           rightSidePrefix: '',
-          rightSidePrefixFontSize: '60%',
+          rightSidePrefixFontSize: '120%',
           rightSidePostfix: '',
-          rightSidePostfixFontSize: '60%',
+          rightSidePostfixFontSize: '120%',
           rightSideDecimals: 2,
           trendMethod: 'AVG',
           thresholds: '',
@@ -190,7 +190,7 @@ System.register(['app/plugins/sdk', 'lodash', 'jquery', 'app/core/utils/kbn', 'a
           _this.valueNameOptions = ['min', 'max', 'avg', 'current', 'total', 'name', 'first', 'delta', 'range'];
           _this.panel.currentValueFormatted = "";
           _this.fontSizesPx = ['4px', '5px', '6px', '7px', '8px', '9px', '10px', '11px', '12px', '13px', '14px', '15px', '16px', '17px', '18px', '19px', '20px', '22px', '24px', '26px', '28px', '30px', '32px', '34px', '36px', '38px', '40px', '42px', '44px', '46px', '48px', '50px', '52px', '54px', '56px', '58px', '60px', '62px', '64px', '66px', '68px', '70px'];
-          _this.fontSizesPct = ['10%', '20%', '30%', '40%', '50%', '60%', '70%', '80%', '90%', '100%', '110%', '120', '130%', '140%', '150%', '160%', '170%', '180%', '190%', '200%'];
+          _this.fontSizesPct = ['10%', '20%', '30%', '40%', '50%', '60%', '70%', '80%', '90%', '100%', '110%', '120%', '130%', '140%', '150%', '160%', '170%', '180%', '190%', '200%'];
           _this.fontTypes = ['Arial', 'Avant Garde', 'Bookman', 'Consolas', 'Courier', 'Courier New', 'Garamond', 'Helvetica', 'Helvetica Neue', 'Open Sans', 'Palatino', 'sans-serif', 'Times', 'Times New Roman', 'Verdana'];
           _this.panel.trendstat.rightSideValueFontType = _this.fontTypes[7];
           _this.panel.valueFontSize = _this.fontSizesPct[7];
