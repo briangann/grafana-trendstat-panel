@@ -2,19 +2,28 @@
     <md-content flex class="trendstat-panel layout-column" style="overflow: hidden">
         <div flex class="layout-row layout-fill">
       <!--      <div flex="60" class="flex-60 trendstat-panel-left-side" style="width: 100%;"> -->
-            <div flex="60" class="trendstat-panel-left-side" style="width: 100%;">
+            <div flex="{{ctrl.panel.trendstat.splitLeftPercent}}" class="flex-{{ctrl.panel.trendstat.splitLeftPercent}} trendstat-panel-left-side"
+             style="width: 100%;">
                 <md-grid-list flex class="layout-fill" md-cols-xs="1">
                     <md-grid-tile class="layout-fill" style="background-color: {{ctrl.panel.currentValueBackgroundColor}}; position: relative;">
                         <div layout="column" class="layout-fill" style="font-size: 28px; font-weight: bold; text-align: right; width: 100%;">
                             <div style="position:absolute; height:100%; width:100%;display: table;">
-                                <div ng-if="!ctrl.panel.gauge.show" style="display: table-cell; vertical-align: middle; text-align:center; color: {{ctrl.panel.valueColor}}">
+                                <div ng-if="!ctrl.panel.gauge.show" style="display: table-cell; vertical-align: middle; text-align:center; color: {{ctrl.panel.valueColor}}; font-family: {{ctrl.panel.valueFontType}};">
                                     <span style="font-size: {{ctrl.panel.prefixFontSize}};">{{ctrl.panel.prefix}}</span>
                                     <span style="font-size: {{ctrl.panel.valueFontSize}};">{{ctrl.panel.currentValueFormatted}}</span><span style="font-size: {{ctrl.panel.postfixFontSize}};">{{ctrl.panel.postfix}}</span>
                                 </div>
                                 <div ng-if="!ctrl.panel.trendstat.splitDisplay" style="position:absolute; height:100%; width:100%;display: table;">
-                                    <div style="display: table-cell; vertical-align: middle; text-align:center; font-size: 22px;">
+                                    <div style="display: table-cell; vertical-align: middle; text-align:center; font-family: {{ctrl.panel.trendstat.rightSideValueFontType}};">
+                                      <span style="font-size: {{ctrl.panel.trendstat.rightSidePrefixFontSize}};">
+                                        {{ctrl.panel.trendstat.rightSidePrefix}}
+                                      </span>
+                                      <span style="font-size: {{ctrl.panel.trendstat.rightSideValueFontSize}};">
                                         {{ctrl.panel.trendAvgPercentage}}%
-                                        <md-icon style="margin-bottom: 6px;"><i class="{{ctrl.panel.trendIcon}}"></i></md-icon>
+                                      </span>
+                                      <span style="font-size: {{ctrl.panel.trendstat.rightSidePostfixFontSize}};">
+                                        {{ctrl.panel.trendstat.rightSidePostfix}}
+                                      </span>
+                                        <md-icon style="margin-bottom: 6px;"><i class="{{ctrl.panel.trendstat.trendIcon}}"></i></md-icon>
                                         <div style="text-align: center; font-size: 12px;">
                                           vs {{ctrl.panel.trendAvgValueFormatted}} AVG
                                         </div>
@@ -31,7 +40,7 @@
                         </div>
                         <div ng-if="ctrl.panel.trendstat.leftSideShowSubtext">
                           <md-grid-tile-footer style="font-size: 12px; font-weight: bold; height: 20%;">
-                            <div style="text-align: center; width: 100%; font-size: {{ctrl.panel.trendstat.leftSideSubtextFontSize}};">
+                            <div style="text-align: center; width: 100%; font-size: {{ctrl.panel.trendstat.leftSideSubtextFontSize}}; font-family: {{ctrl.panel.trendstat.leftSideSubtextFontType}};">
                               <span ng-if="ctrl.panel.trendstat.leftSideShowSubtext">
                                 {{ctrl.panel.trendstat.leftSideSubtext}}
                               </span>
@@ -51,14 +60,26 @@
 
             <!-- <div flex="40" class="flex-40" style="width: 100%;" ng-if="ctrl.panel.splitSections"> -->
 
-            <div flex="40" class="flex-40" style="width: 100%;" ng-if="ctrl.panel.trendstat.splitDisplay">
+            <div flex="{{ctrl.panel.trendstat.splitRightPercent}}"
+              class="flex-{{ctrl.panel.trendstat.splitRightPercent}}" style="width: 100%;"
+              ng-if="ctrl.panel.trendstat.splitDisplay">
                 <md-grid-list flex class="layout-fill" md-cols-xs="1">
                     <md-grid-tile class="layout-fill" style="position: relative;">
                         <div layout="column" class="layout-fill" style="font-size: 20px; font-weight: bold; text-align: left; width: 100%;">
-                            <div style="position:absolute; height:100%; width:100%;display: table;">
+                            <div style="position:absolute; height:100%; width:100%;display: table; font-family: {{ctrl.panel.trendstat.rightSideValueFontType}};">
                                 <div style="display: table-cell; vertical-align: middle; text-align:center;">
+                                  <span style="font-size: {{ctrl.panel.trendstat.rightSidePrefixFontSize}};">
+                                    {{ctrl.panel.trendstat.rightSidePrefix}}
+                                  </span>
+                                  <span style="font-size: {{ctrl.panel.trendstat.rightSideValueFontSize}};">
                                     {{ctrl.panel.trendAvgPercentage}}%
-                                    <md-icon style="margin-bottom: 6px;"><i class="{{ctrl.panel.trendIcon}}"></i></md-icon>
+                                  </span>
+                                  <span style="font-size: {{ctrl.panel.trendstat.rightSidePostfixFontSize}};">
+                                    {{ctrl.panel.trendstat.rightSidePostfix}}
+                                  </span>
+                                    <md-icon style="margin-bottom: 6px; font-size: {{ctrl.panel.trendstat.trendIconFontSize}}; color: {{ctrl.panel.trendstat.trendIconColor}};">
+                                      <i class="{{ctrl.panel.trendstat.trendIcon}}"></i>
+                                    </md-icon>
                                     <div ng-if="ctrl.panel.trendstat.rightSideShowTimestamp" style="text-align: center; font-size: 12px;">
                                         {{ctrl.panel.trendstat.rightSideTimestamp}}
                                     </div>
@@ -66,7 +87,7 @@
                             </div>
                         </div>
                         <md-grid-tile-footer style="font-size: 12px; font-weight: bold; height: 20%;">
-                            <div style="text-align: center; width: 100%; font-size: {{ctrl.panel.rightSideSubtextFontSize}};">
+                            <div style="text-align: center; width: 100%; font-size: {{ctrl.panel.trendstat.rightSideSubtextFontSize}};">
                               <span>vs {{ctrl.panel.trendAvgValueFormatted}} AVG</span><!--{{ctrl.panel.trendTimeStep}} sec-->
                               <span ng-if="ctrl.panel.trendstat.rightSideShowSubtext">
                                 {{ctrl.panel.trendstat.rightSideSubtext}}

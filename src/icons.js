@@ -274,6 +274,17 @@ export const ICONS_TREND_NONE = [
         value: 'fa-fw'
       },
       {
+        text: 'Arrow Circle Left',
+        value: 'fa-arrow-circle-left'
+      },{
+        text: 'Arrow Circle O Left',
+        value: 'fa-arrow-circle-o-left'
+      },
+      {
+        text: 'Arrow Left',
+        value: 'fa-arrow-left'
+      },
+      {
         text: 'Check',
         value: 'fa-check'
       },
@@ -292,6 +303,14 @@ export const ICONS_TREND_NONE = [
       {
         text: 'Check Square Filled',
         value: 'fa-check-square'
+      },
+      {
+        text: 'Chevron Circle Left',
+        value: 'fa-arrow-circle-left'
+      },
+      {
+        text: 'Chevron Left',
+        value: 'fa-arrow-left'
       },
       {
         text: 'Circle',

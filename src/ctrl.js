@@ -6,8 +6,6 @@ import $ from 'jquery';
 import kbn from 'app/core/utils/kbn';
 import config from 'app/core/config';
 import TimeSeries from 'app/core/time_series2';
-import 'jquery.flot';
-import 'jquery.flot.gauge';
 
 import './libs/angular-aria/angular-aria.min.js';
 import './libs/angular-animate/angular-animate.min.js';
@@ -27,6 +25,7 @@ const panelDefaults = {
     leftSideSubtext: 'Updated:',
     leftSideShowSubtext: true,
     leftSideSubtextFontSize: '100%',
+    leftSideSubtextFontType: 'default',
     leftSideShowTimestamp: true,
     rightSideShowSubtext: true,
     rightSideSubTextFontSize: '100%',
@@ -43,10 +42,14 @@ const panelDefaults = {
     splitDisplay: true,
     showDivider: true,
     dividerColor: 'rgb(109, 109, 109)',
-    splitRatio: 0.6,
+    splitLeftPercent: 60,
+    splitRightPercent: 40,
+    trendIcon: 'fa-fw',
     trendIconUp: 'fa-arrow-circle-up',
     trendIconDown: 'fa-arrow-circle-down',
     trendIconNone: 'fa-fw',
+    trendIconFontSize: '160%',
+    trendIconColor: 'rgb(255,255,255)',
     trendUpFontSize: '160%',
     trendDownFontSize: '160%',
     trendNoneFontSize: '160%',
@@ -98,9 +101,6 @@ const panelDefaults = {
   mappingType: 1,
   nullPointMode: 'connected',
   valueName: 'avg',
-  NOTprefixFontSize: '50%',
-  NOTvalueFontSize: '80%',
-  NOTpostfixFontSize: '50%',
   thresholds: '',
   colorBackground: false,
   colorValue: false,
@@ -126,7 +126,7 @@ export class TrendStatPanelCtrl extends MetricsPanelCtrl {
     super($scope, $injector);
     _.defaults(this.panel, panelDefaults);
     this.http = $http;
-    this.valueNameOptions = ['min','max','avg', 'current', 'total', 'name', 'first', 'delta', 'range'];
+    this.valueNameOptions = ['min', 'max', 'avg', 'current', 'total', 'name', 'first', 'delta', 'range'];
     this.panel.currentValueFormatted = "";
     this.fontSizesPx = [
       '4px', '5px', '6px', '7px', '8px', '9px', '10px',
@@ -135,15 +135,20 @@ export class TrendStatPanelCtrl extends MetricsPanelCtrl {
       '42px', '44px', '46px', '48px', '50px', '52px', '54px', '56px', '58px', '60px',
       '62px', '64px', '66px', '68px', '70px'];
     this.fontSizesPct = [
-      '10%', '20%', '30%', '40%', '50%', '60%', '70%', '80%', '90%', '100%',
-      '110%', '120%', '130%', '140%', '150%', '160%', '170%', '180%', '190%', '200%'];
+      '5%', '10%', '20%', '30%', '40%', '50%', '60%', '70%', '80%', '90%', '100%',
+      '110%', '120%', '130%', '140%', '150%', '160%', '170%', '180%', '190%', '200%',
+      '210%', '220%', '230%', '240%', '250%', '260%', '270%', '280%', '290%', '300%',
+      '310%', '320%', '330%', '340%', '350%', '360%', '370%', '380%', '390%', '400%',
+      '410%', '420%', '430%', '440%', '450%', '460%', '470%', '480%', '490%', '500%'
+    ];
     this.fontTypes = [
-      'Arial', 'Avant Garde', 'Bookman',
+      'default', 'Arial', 'Avant Garde', 'Bookman',
       'Consolas', 'Courier', 'Courier New',
       'Garamond', 'Helvetica', 'Helvetica Neue', 'Open Sans',
       'Palatino', 'sans-serif', 'Times', 'Times New Roman',
       'Verdana'
     ];
+    /*
     this.panel.trendstat.rightSideValueFontType = this.fontTypes[7];
     this.panel.valueFontSize = this.fontSizesPct[7];
     this.panel.prefixFontSize = this.fontSizesPct[5];
@@ -153,6 +158,7 @@ export class TrendStatPanelCtrl extends MetricsPanelCtrl {
     this.panel.trendstat.rightSidePrefixFontSize = this.fontSizesPct[5];
     this.panel.trendstat.rightSidePostfixFontSize = this.fontSizesPct[5];
     this.panel.trendstat.rightSideValueFontSize = this.fontSizesPct[9];
+    */
     this.trendMethods = [
       'AVG',
     ];
@@ -310,6 +316,8 @@ export class TrendStatPanelCtrl extends MetricsPanelCtrl {
         //data.trendIcon = this.getTrendIcon(data.previousValue, data.value);
         // for avg value trend
         data.trendIcon = this.getTrendIcon(data.trendAvgValue, data.value);
+        data.trendIconFontSize = this.getTrendIconFontSize(data.trendAvgValue, data.value);
+        data.trendIconColor = this.getTrendIconColor(data.trendAvgValue, data.value);
 
         // Add $__name variable for using in prefix or postfix
         data.scopedVars = _.extend({}, this.panel.scopedVars);
@@ -376,7 +384,17 @@ export class TrendStatPanelCtrl extends MetricsPanelCtrl {
     this.onDataReceived([]);
   }
 
+  getCurrentTime() {
+    var d = new Date();
+    return d.toISOString();
+  }
+
   onDataReceived(dataList) {
+    // these can differ given the options, but for now set them to the same time
+    //
+    this.panel.trendstat.leftSideTimestamp = this.getCurrentTime();
+    this.panel.trendstat.rightSideTimestamp = this.panel.trendstat.leftSideTimestamp;
+
     this.series = dataList.map(this.seriesHandler.bind(this));
     var data = {};
     this.setValues(data);
@@ -415,6 +433,23 @@ export class TrendStatPanelCtrl extends MetricsPanelCtrl {
     this.render();
   }
 
+  onColorChange(panelColorIndex) {
+    return (color) => {
+      this.panel.colors[panelColorIndex] = color;
+      this.render();
+    };
+  }
+
+  onSparklineColorChange(newColor) {
+    this.panel.sparkline.lineColor = newColor;
+    this.render();
+  }
+
+  onSparklineFillChange(newColor) {
+    this.panel.sparkline.fillColor = newColor;
+    this.render();
+  }
+
   invertTrendColorOrder() {
     var tmp = this.panel.trendstat.colors[0];
     this.panel.trendstat.colors[0] = this.panel.trendstat.colors[2];
@@ -425,30 +460,93 @@ export class TrendStatPanelCtrl extends MetricsPanelCtrl {
   getTrendIcon(historicalValue, currentValue) {
     var icon = "fa fa-square";
     if (currentValue > historicalValue) {
-      icon = "fa fa-arrow-up";
+      icon = "fa " + this.panel.trendstat.trendIconUp;
     }
     if (currentValue < historicalValue) {
-      icon = "fa fa-arrow-down";
+      icon = "fa " + this.panel.trendstat.trendIconDown;
     }
     if (currentValue === historicalValue) {
-      icon = "fa fa-fw";
+      icon = "fa " + this.panel.trendstat.trendIconNone;
     }
-    // other icon sets
-    // fa-exclamation-triangle
-    // fa-exclamation-circle
-    // fa-fire
-    // fa-flag
-    // fa-thumbs-up
-    // fa-thumbs-down
-    // fa-chevron-circle-up fa-chevron-circle-down
-    // fa-chevron-up fa-chevron-down
-    // fa-angle-double-down fa-angle-double-up fa-angle-down fa-angle-up
-    // fa-arrow-circle-up fa-arrow-circle-down
-    // fa-arrow-circle-o-up fa-arrow-circle-o-down
-    // fa-caret-up fa-caret-down
     return icon;
   }
+  getTrendIconFontSize(historicalValue, currentValue) {
+    var fontSize = this.panel.trendstat.trendNoneFontSize;
+    if (currentValue > historicalValue) {
+      fontSize = this.panel.trendstat.trendUpFontSize;
+    }
+    if (currentValue < historicalValue) {
+      fontSize = this.panel.trendstat.trendDownFontSize;
+    }
+    if (currentValue === historicalValue) {
+      fontSize = this.panel.trendstat.trendNoneFontSize;
+    }
+    return fontSize;
+  }
+  getTrendIconColor(historicalValue, currentValue) {
+    var color = "rgb(255,255,255)";
+    if (currentValue > historicalValue) {
+      color = this.panel.trendstat.trendUpFillColor;
+    }
+    if (currentValue < historicalValue) {
+      color = this.panel.trendstat.trendDownFillColor;
+    }
+    if (currentValue === historicalValue) {
+      color = this.panel.trendstat.trendNoneFillColor;
+    }
+    return color;
+  }
 
+  updateLeftSplitPercentage() {
+    // make sure it is a number
+    if (isNaN(this.panel.trendstat.splitLeftPercent)) {
+      // autoset to 60
+      this.panel.trendstat.splitLeftPercent = 60;
+    }
+    var pct = this.panel.trendstat.splitLeftPercent;
+    // make sure the value is in range
+    if ((pct < 0 ) || (pct > 100)) {
+      this.panel.trendstat.splitLeftPercent = 60;
+    }
+    // update value
+    pct = this.panel.trendstat.splitLeftPercent;
+    // set the right side
+    this.panel.trendstat.splitRightPercent = 100 - pct;
+    // now refresh (render will not take effect)
+    this.refresh();
+  }
+
+  updateRightSplitPercentage() {
+    // make sure it is a number
+    if (isNaN(this.panel.trendstat.splitRightPercent)) {
+      // autoset to 40
+      this.panel.trendstat.splitRightPercent = 40;
+    }
+    var pct = this.panel.trendstat.splitRightPercent;
+    // make sure the value is in range
+    if ((pct < 0 ) || (pct > 100)) {
+      this.panel.trendstat.splitRightPercent = 40;
+    }
+    // update value
+    pct = this.panel.trendstat.splitRightPercent;
+    // set the right side
+    this.panel.trendstat.splitLeftPercent = 100 - pct;
+    // now refresh (render will not take effect)
+    this.refresh();
+  }
+
+  toggleSplitDisplay() {
+    if (!this.panel.trendstat.splitDisplay) {
+      this.panel.trendstat.prevSplitRightPercent = this.panel.trendstat.splitRightPercent;
+      this.panel.trendstat.prevSplitLeftPercent = this.panel.trendstat.splitLeftPercent;
+      this.panel.trendstat.splitRightPercent = 0;
+      this.panel.trendstat.splitLeftPercent = 100;
+    } else {
+      this.panel.trendstat.splitRightPercent = this.panel.trendstat.prevSplitRightPercent;
+      this.panel.trendstat.splitLeftPercent = this.panel.trendstat.prevSplitLeftPercent;
+    }
+    this.refresh();
+  }
   getStatusColor(value) {
     var color = "yellow";
     switch (value) {
@@ -510,7 +608,9 @@ export class TrendStatPanelCtrl extends MetricsPanelCtrl {
       panel.previousValueRaw = data.previousValue;
       panel.previousValueFormatted = data.previousValueFormatted;
       panel.previousValueRounded = data.previousValueRounded;
-      panel.trendIcon = data.trendIcon;
+      panel.trendstat.trendIcon = data.trendIcon;
+      panel.trendstat.trendIconFontSize = data.trendIconFontSize;
+      panel.trendstat.trendIconColor = data.trendIconColor;
       panel.trendPercentage = data.trendPercentage;
       panel.trendAvgPercentage = data.trendAvgPercentage;
       panel.trendAvgValue = data.trendAvgValue;
@@ -549,7 +649,7 @@ export class TrendStatPanelCtrl extends MetricsPanelCtrl {
       if (panel.gauge.show) {
         addGauge();
       }
-      panel.trendstat.leftSideTimestamp = getCurrentTime();
+
       //elem.toggleClass('pointer', panel.links.length > 0);
 
       //if (panel.links.length > 0) {
@@ -678,7 +778,7 @@ export class TrendStatPanelCtrl extends MetricsPanelCtrl {
                value: {
                  color: panel.colorValue ? getColorForValue(data, data.valueRounded) : null,
                  formatter: function() { return getValueText(); },
-                 font: { size: fontSize, family: '"Helvetica Neue", Helvetica, Arial, sans-serif' }
+                 font: { size: fontSize, family: panel.valueFontType }
                },
                show: true
              }

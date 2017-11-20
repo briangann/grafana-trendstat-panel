@@ -1,6 +1,6 @@
 'use strict';
 
-System.register(['app/plugins/sdk', 'lodash', 'jquery', 'app/core/utils/kbn', 'app/core/config', 'app/core/time_series2', 'jquery.flot', 'jquery.flot.gauge', './libs/angular-aria/angular-aria.min.js', './libs/angular-animate/angular-animate.min.js', './libs/angular-material/angular-material.min.js', './libs/angular-material/angular-material.min.css!', './css/font-awesome.min.css!', './css/panel.css!', './icons'], function (_export, _context) {
+System.register(['app/plugins/sdk', 'lodash', 'jquery', 'app/core/utils/kbn', 'app/core/config', 'app/core/time_series2', './libs/angular-aria/angular-aria.min.js', './libs/angular-animate/angular-animate.min.js', './libs/angular-material/angular-material.min.js', './libs/angular-material/angular-material.min.css!', './css/font-awesome.min.css!', './css/panel.css!', './icons'], function (_export, _context) {
   "use strict";
 
   var MetricsPanelCtrl, _, $, kbn, config, TimeSeries, ICONS_TREND_UP, ICONS_TREND_DOWN, ICONS_TREND_NONE, _createClass, panelDefaults, TrendStatPanelCtrl;
@@ -57,7 +57,7 @@ System.register(['app/plugins/sdk', 'lodash', 'jquery', 'app/core/utils/kbn', 'a
       config = _appCoreConfig.default;
     }, function (_appCoreTime_series) {
       TimeSeries = _appCoreTime_series.default;
-    }, function (_jqueryFlot) {}, function (_jqueryFlotGauge) {}, function (_libsAngularAriaAngularAriaMinJs) {}, function (_libsAngularAnimateAngularAnimateMinJs) {}, function (_libsAngularMaterialAngularMaterialMinJs) {}, function (_libsAngularMaterialAngularMaterialMinCss) {}, function (_cssFontAwesomeMinCss) {}, function (_cssPanelCss) {}, function (_icons) {
+    }, function (_libsAngularAriaAngularAriaMinJs) {}, function (_libsAngularAnimateAngularAnimateMinJs) {}, function (_libsAngularMaterialAngularMaterialMinJs) {}, function (_libsAngularMaterialAngularMaterialMinCss) {}, function (_cssFontAwesomeMinCss) {}, function (_cssPanelCss) {}, function (_icons) {
       ICONS_TREND_UP = _icons.ICONS_TREND_UP;
       ICONS_TREND_DOWN = _icons.ICONS_TREND_DOWN;
       ICONS_TREND_NONE = _icons.ICONS_TREND_NONE;
@@ -91,6 +91,7 @@ System.register(['app/plugins/sdk', 'lodash', 'jquery', 'app/core/utils/kbn', 'a
           leftSideSubtext: 'Updated:',
           leftSideShowSubtext: true,
           leftSideSubtextFontSize: '100%',
+          leftSideSubtextFontType: 'default',
           leftSideShowTimestamp: true,
           rightSideShowSubtext: true,
           rightSideSubTextFontSize: '100%',
@@ -107,10 +108,14 @@ System.register(['app/plugins/sdk', 'lodash', 'jquery', 'app/core/utils/kbn', 'a
           splitDisplay: true,
           showDivider: true,
           dividerColor: 'rgb(109, 109, 109)',
-          splitRatio: 0.6,
+          splitLeftPercent: 60,
+          splitRightPercent: 40,
+          trendIcon: 'fa-fw',
           trendIconUp: 'fa-arrow-circle-up',
           trendIconDown: 'fa-arrow-circle-down',
           trendIconNone: 'fa-fw',
+          trendIconFontSize: '160%',
+          trendIconColor: 'rgb(255,255,255)',
           trendUpFontSize: '160%',
           trendDownFontSize: '160%',
           trendNoneFontSize: '160%',
@@ -155,9 +160,6 @@ System.register(['app/plugins/sdk', 'lodash', 'jquery', 'app/core/utils/kbn', 'a
         mappingType: 1,
         nullPointMode: 'connected',
         valueName: 'avg',
-        NOTprefixFontSize: '50%',
-        NOTvalueFontSize: '80%',
-        NOTpostfixFontSize: '50%',
         thresholds: '',
         colorBackground: false,
         colorValue: false,
@@ -190,17 +192,19 @@ System.register(['app/plugins/sdk', 'lodash', 'jquery', 'app/core/utils/kbn', 'a
           _this.valueNameOptions = ['min', 'max', 'avg', 'current', 'total', 'name', 'first', 'delta', 'range'];
           _this.panel.currentValueFormatted = "";
           _this.fontSizesPx = ['4px', '5px', '6px', '7px', '8px', '9px', '10px', '11px', '12px', '13px', '14px', '15px', '16px', '17px', '18px', '19px', '20px', '22px', '24px', '26px', '28px', '30px', '32px', '34px', '36px', '38px', '40px', '42px', '44px', '46px', '48px', '50px', '52px', '54px', '56px', '58px', '60px', '62px', '64px', '66px', '68px', '70px'];
-          _this.fontSizesPct = ['10%', '20%', '30%', '40%', '50%', '60%', '70%', '80%', '90%', '100%', '110%', '120%', '130%', '140%', '150%', '160%', '170%', '180%', '190%', '200%'];
-          _this.fontTypes = ['Arial', 'Avant Garde', 'Bookman', 'Consolas', 'Courier', 'Courier New', 'Garamond', 'Helvetica', 'Helvetica Neue', 'Open Sans', 'Palatino', 'sans-serif', 'Times', 'Times New Roman', 'Verdana'];
-          _this.panel.trendstat.rightSideValueFontType = _this.fontTypes[7];
-          _this.panel.valueFontSize = _this.fontSizesPct[7];
-          _this.panel.prefixFontSize = _this.fontSizesPct[5];
-          _this.panel.postfixFontSize = _this.fontSizesPct[5];
-          _this.panel.trendstat.leftSideSubtextFontSize = _this.fontSizesPct[5];
-          _this.panel.trendstat.rightSideSubtextFontSize = _this.fontSizesPct[5];
-          _this.panel.trendstat.rightSidePrefixFontSize = _this.fontSizesPct[5];
-          _this.panel.trendstat.rightSidePostfixFontSize = _this.fontSizesPct[5];
-          _this.panel.trendstat.rightSideValueFontSize = _this.fontSizesPct[9];
+          _this.fontSizesPct = ['5%', '10%', '20%', '30%', '40%', '50%', '60%', '70%', '80%', '90%', '100%', '110%', '120%', '130%', '140%', '150%', '160%', '170%', '180%', '190%', '200%', '210%', '220%', '230%', '240%', '250%', '260%', '270%', '280%', '290%', '300%', '310%', '320%', '330%', '340%', '350%', '360%', '370%', '380%', '390%', '400%', '410%', '420%', '430%', '440%', '450%', '460%', '470%', '480%', '490%', '500%'];
+          _this.fontTypes = ['default', 'Arial', 'Avant Garde', 'Bookman', 'Consolas', 'Courier', 'Courier New', 'Garamond', 'Helvetica', 'Helvetica Neue', 'Open Sans', 'Palatino', 'sans-serif', 'Times', 'Times New Roman', 'Verdana'];
+          /*
+          this.panel.trendstat.rightSideValueFontType = this.fontTypes[7];
+          this.panel.valueFontSize = this.fontSizesPct[7];
+          this.panel.prefixFontSize = this.fontSizesPct[5];
+          this.panel.postfixFontSize = this.fontSizesPct[5];
+          this.panel.trendstat.leftSideSubtextFontSize = this.fontSizesPct[5];
+          this.panel.trendstat.rightSideSubtextFontSize = this.fontSizesPct[5];
+          this.panel.trendstat.rightSidePrefixFontSize = this.fontSizesPct[5];
+          this.panel.trendstat.rightSidePostfixFontSize = this.fontSizesPct[5];
+          this.panel.trendstat.rightSideValueFontSize = this.fontSizesPct[9];
+          */
           _this.trendMethods = ['AVG'];
           _this.panel.trendstat.trendMethod = _this.trendMethods[0];
           _this.trendStatIconsUp = ICONS_TREND_UP;
@@ -367,6 +371,8 @@ System.register(['app/plugins/sdk', 'lodash', 'jquery', 'app/core/utils/kbn', 'a
               //data.trendIcon = this.getTrendIcon(data.previousValue, data.value);
               // for avg value trend
               data.trendIcon = this.getTrendIcon(data.trendAvgValue, data.value);
+              data.trendIconFontSize = this.getTrendIconFontSize(data.trendAvgValue, data.value);
+              data.trendIconColor = this.getTrendIconColor(data.trendAvgValue, data.value);
 
               // Add $__name variable for using in prefix or postfix
               data.scopedVars = _.extend({}, this.panel.scopedVars);
@@ -436,8 +442,19 @@ System.register(['app/plugins/sdk', 'lodash', 'jquery', 'app/core/utils/kbn', 'a
             this.onDataReceived([]);
           }
         }, {
+          key: 'getCurrentTime',
+          value: function getCurrentTime() {
+            var d = new Date();
+            return d.toISOString();
+          }
+        }, {
           key: 'onDataReceived',
           value: function onDataReceived(dataList) {
+            // these can differ given the options, but for now set them to the same time
+            //
+            this.panel.trendstat.leftSideTimestamp = this.getCurrentTime();
+            this.panel.trendstat.rightSideTimestamp = this.panel.trendstat.leftSideTimestamp;
+
             this.series = dataList.map(this.seriesHandler.bind(this));
             var data = {};
             this.setValues(data);
@@ -479,6 +496,28 @@ System.register(['app/plugins/sdk', 'lodash', 'jquery', 'app/core/utils/kbn', 'a
             this.render();
           }
         }, {
+          key: 'onColorChange',
+          value: function onColorChange(panelColorIndex) {
+            var _this2 = this;
+
+            return function (color) {
+              _this2.panel.colors[panelColorIndex] = color;
+              _this2.render();
+            };
+          }
+        }, {
+          key: 'onSparklineColorChange',
+          value: function onSparklineColorChange(newColor) {
+            this.panel.sparkline.lineColor = newColor;
+            this.render();
+          }
+        }, {
+          key: 'onSparklineFillChange',
+          value: function onSparklineFillChange(newColor) {
+            this.panel.sparkline.fillColor = newColor;
+            this.render();
+          }
+        }, {
           key: 'invertTrendColorOrder',
           value: function invertTrendColorOrder() {
             var tmp = this.panel.trendstat.colors[0];
@@ -491,28 +530,99 @@ System.register(['app/plugins/sdk', 'lodash', 'jquery', 'app/core/utils/kbn', 'a
           value: function getTrendIcon(historicalValue, currentValue) {
             var icon = "fa fa-square";
             if (currentValue > historicalValue) {
-              icon = "fa fa-arrow-up";
+              icon = "fa " + this.panel.trendstat.trendIconUp;
             }
             if (currentValue < historicalValue) {
-              icon = "fa fa-arrow-down";
+              icon = "fa " + this.panel.trendstat.trendIconDown;
             }
             if (currentValue === historicalValue) {
-              icon = "fa fa-fw";
+              icon = "fa " + this.panel.trendstat.trendIconNone;
             }
-            // other icon sets
-            // fa-exclamation-triangle
-            // fa-exclamation-circle
-            // fa-fire
-            // fa-flag
-            // fa-thumbs-up
-            // fa-thumbs-down
-            // fa-chevron-circle-up fa-chevron-circle-down
-            // fa-chevron-up fa-chevron-down
-            // fa-angle-double-down fa-angle-double-up fa-angle-down fa-angle-up
-            // fa-arrow-circle-up fa-arrow-circle-down
-            // fa-arrow-circle-o-up fa-arrow-circle-o-down
-            // fa-caret-up fa-caret-down
             return icon;
+          }
+        }, {
+          key: 'getTrendIconFontSize',
+          value: function getTrendIconFontSize(historicalValue, currentValue) {
+            var fontSize = this.panel.trendstat.trendNoneFontSize;
+            if (currentValue > historicalValue) {
+              fontSize = this.panel.trendstat.trendUpFontSize;
+            }
+            if (currentValue < historicalValue) {
+              fontSize = this.panel.trendstat.trendDownFontSize;
+            }
+            if (currentValue === historicalValue) {
+              fontSize = this.panel.trendstat.trendNoneFontSize;
+            }
+            return fontSize;
+          }
+        }, {
+          key: 'getTrendIconColor',
+          value: function getTrendIconColor(historicalValue, currentValue) {
+            var color = "rgb(255,255,255)";
+            if (currentValue > historicalValue) {
+              color = this.panel.trendstat.trendUpFillColor;
+            }
+            if (currentValue < historicalValue) {
+              color = this.panel.trendstat.trendDownFillColor;
+            }
+            if (currentValue === historicalValue) {
+              color = this.panel.trendstat.trendNoneFillColor;
+            }
+            return color;
+          }
+        }, {
+          key: 'updateLeftSplitPercentage',
+          value: function updateLeftSplitPercentage() {
+            // make sure it is a number
+            if (isNaN(this.panel.trendstat.splitLeftPercent)) {
+              // autoset to 60
+              this.panel.trendstat.splitLeftPercent = 60;
+            }
+            var pct = this.panel.trendstat.splitLeftPercent;
+            // make sure the value is in range
+            if (pct < 0 || pct > 100) {
+              this.panel.trendstat.splitLeftPercent = 60;
+            }
+            // update value
+            pct = this.panel.trendstat.splitLeftPercent;
+            // set the right side
+            this.panel.trendstat.splitRightPercent = 100 - pct;
+            // now refresh (render will not take effect)
+            this.refresh();
+          }
+        }, {
+          key: 'updateRightSplitPercentage',
+          value: function updateRightSplitPercentage() {
+            // make sure it is a number
+            if (isNaN(this.panel.trendstat.splitRightPercent)) {
+              // autoset to 40
+              this.panel.trendstat.splitRightPercent = 40;
+            }
+            var pct = this.panel.trendstat.splitRightPercent;
+            // make sure the value is in range
+            if (pct < 0 || pct > 100) {
+              this.panel.trendstat.splitRightPercent = 40;
+            }
+            // update value
+            pct = this.panel.trendstat.splitRightPercent;
+            // set the right side
+            this.panel.trendstat.splitLeftPercent = 100 - pct;
+            // now refresh (render will not take effect)
+            this.refresh();
+          }
+        }, {
+          key: 'toggleSplitDisplay',
+          value: function toggleSplitDisplay() {
+            if (!this.panel.trendstat.splitDisplay) {
+              this.panel.trendstat.prevSplitRightPercent = this.panel.trendstat.splitRightPercent;
+              this.panel.trendstat.prevSplitLeftPercent = this.panel.trendstat.splitLeftPercent;
+              this.panel.trendstat.splitRightPercent = 0;
+              this.panel.trendstat.splitLeftPercent = 100;
+            } else {
+              this.panel.trendstat.splitRightPercent = this.panel.trendstat.prevSplitRightPercent;
+              this.panel.trendstat.splitLeftPercent = this.panel.trendstat.prevSplitLeftPercent;
+            }
+            this.refresh();
           }
         }, {
           key: 'getStatusColor',
@@ -578,7 +688,9 @@ System.register(['app/plugins/sdk', 'lodash', 'jquery', 'app/core/utils/kbn', 'a
               panel.previousValueRaw = data.previousValue;
               panel.previousValueFormatted = data.previousValueFormatted;
               panel.previousValueRounded = data.previousValueRounded;
-              panel.trendIcon = data.trendIcon;
+              panel.trendstat.trendIcon = data.trendIcon;
+              panel.trendstat.trendIconFontSize = data.trendIconFontSize;
+              panel.trendstat.trendIconColor = data.trendIconColor;
               panel.trendPercentage = data.trendPercentage;
               panel.trendAvgPercentage = data.trendAvgPercentage;
               panel.trendAvgValue = data.trendAvgValue;
@@ -617,7 +729,7 @@ System.register(['app/plugins/sdk', 'lodash', 'jquery', 'app/core/utils/kbn', 'a
               if (panel.gauge.show) {
                 addGauge();
               }
-              panel.trendstat.leftSideTimestamp = getCurrentTime();
+
               //elem.toggleClass('pointer', panel.links.length > 0);
 
               //if (panel.links.length > 0) {
@@ -750,7 +862,7 @@ System.register(['app/plugins/sdk', 'lodash', 'jquery', 'app/core/utils/kbn', 'a
                       formatter: function formatter() {
                         return getValueText();
                       },
-                      font: { size: fontSize, family: '"Helvetica Neue", Helvetica, Arial, sans-serif' }
+                      font: { size: fontSize, family: panel.valueFontType }
                     },
                     show: true
                   }

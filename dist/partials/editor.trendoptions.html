@@ -1,24 +1,34 @@
 <div class="editor-row">
 	<div class="section gf-form-group">
 		<h5 class="section-heading">Display</h5>
-		<div class="gf-form-inline">
-			<gf-form-switch class="gf-form-inline" label-class="width-12" label="Split Display" checked="ctrl.panel.trendstat.splitDisplay" on-change="ctrl.render()"></gf-form-switch>
+		<div class="gf-form">
+			<gf-form-switch class="gf-form" label-class="width-10" label="Split Display" checked="ctrl.panel.trendstat.splitDisplay" on-change="ctrl.toggleSplitDisplay()"></gf-form-switch>
 			<div ng-if="ctrl.panel.trendstat.splitDisplay">
 				<div class="gf-form">
-					<label class="gf-form-label width-8">Split Ratio
-				<tip>Percentage for Left Side</tip>
-			</label>
-					<input type="text" class="gf-form-input width-4" ng-model="ctrl.panel.trendstat.splitRatio" ng-change="ctrl.render()" ng-model-onblur>
+					<label class="gf-form-label width-9">Split Left
+						<tip>Percentage for Left Side</tip>
+					</label>
+					<input type="text" class="gf-form-input width-4"
+					ng-init="ctrl.panel.trendstat.splitLeftPercent = ctrl.panel.trendstat.splitLeftPercent || 60"
+					ng-model="ctrl.panel.trendstat.splitLeftPercent" ng-change="ctrl.updateLeftSplitPercentage()" ng-model-onblur>
+				</div>
+				<div class="gf-form">
+					<label class="gf-form-label width-9">Split Right
+						<tip>Percentage for Right Side</tip>
+					</label>
+					<input type="text" class="gf-form-input width-4"
+					ng-init="ctrl.panel.trendstat.splitRightPercent = ctrl.panel.trendstat.splitRightPercent || 40"
+					ng-model="ctrl.panel.trendstat.splitRightPercent" ng-change="ctrl.updateRightSplitPercentage()" ng-model-onblur>
 				</div>
 			</div>
 		</div>
-		<div ng-if="ctrl.panel.trendstat.splitDisplay" class="gf-form-inline">
-			<gf-form-switch class="gf-form-inline" label-class="width-12" label="Show Divider" checked="ctrl.panel.trendstat.showDivider" on-change="ctrl.render()"></gf-form-switch>
+		<div ng-if="ctrl.panel.trendstat.splitDisplay" class="gf-form">
+			<gf-form-switch class="gf-form-inline" label-class="width-10" label="Show Divider" checked="ctrl.panel.trendstat.showDivider" on-change="ctrl.refresh()"></gf-form-switch>
 			<div ng-if="ctrl.panel.trendstat.showDivider">
 				<div class="gf-form-inline">
-					<label class="gf-form-label width-8">Divider Color</label>
+					<label class="gf-form-label width-9">Divider Color</label>
 					<span class="gf-form-label">
-						<spectrum-picker ng-model="ctrl.panel.trendstat.dividerColor" ng-change="ctrl.render()" ></spectrum-picker>
+						<spectrum-picker ng-model="ctrl.panel.trendstat.dividerColor" ng-change="ctrl.refresh()" ></spectrum-picker>
 					</span>
 				</div>
 			</div>
@@ -33,7 +43,7 @@
 				<tip>Method used to determine trend</tip>
 				</label>
 				<div class="gf-form-select-wrapper width-10">
-					<select class="gf-form-input" ng-model="ctrl.panel.trendstat.trendMethod" ng-options="f for f in ctrl.trendMethods" ng-change="ctrl.render()"></select>
+					<select class="gf-form-input" ng-model="ctrl.panel.trendstat.trendMethod" ng-options="f for f in ctrl.trendMethods" ng-change="ctrl.refresh()"></select>
 				</div>
 			</div>
 		</div>
@@ -43,18 +53,18 @@
 					<tip>Text to display at bottom of panel</tip>
 				</label>
 			</div>
-			<gf-form-switch class="gf-form" label-class="width-4" label="Show" checked="ctrl.panel.trendstat.rightSideShowSubtext" on-change="ctrl.render()">
+			<gf-form-switch class="gf-form" label-class="width-4" label="Show" checked="ctrl.panel.trendstat.rightSideShowSubtext" on-change="ctrl.refresh()">
 			</gf-form-switch>
 			<div class="gf-form" ng-if="ctrl.panel.trendstat.rightSideShowSubtext" >
-				<input type="text" class="gf-form-input width-20" ng-model="ctrl.panel.trendstat.rightSideSubtext" ng-blur="ctrl.render()" placeholder=""></input>
+				<input type="text" class="gf-form-input width-20" ng-model="ctrl.panel.trendstat.rightSideSubtext" ng-blur="ctrl.refresh()" placeholder=""></input>
 				<label class="gf-form-label width-6">Font Size</label>
 				<div class="gf-form-select-wrapper width-6">
-					<select class="gf-form-input" ng-model="ctrl.panel.trendstat.rightSideSubtextFontSize" ng-options="f for f in ctrl.fontSizesPct" ng-change="ctrl.render()"></select>
+					<select class="gf-form-input" ng-model="ctrl.panel.trendstat.rightSideSubtextFontSize" ng-options="f for f in ctrl.fontSizesPct" ng-change="ctrl.refresh()"></select>
 				</div>
 			</div>
 		</div>
 		<div class="gf-form" ng-if="ctrl.panel.trendstat.rightSideShowSubtext">
-			<gf-form-switch class="gf-form" label-class="width-9" label="Show Timestamp" checked="ctrl.panel.trendstat.rightSideShowTimestamp" on-change="ctrl.render()">
+			<gf-form-switch class="gf-form" label-class="width-9" label="Show Timestamp" checked="ctrl.panel.trendstat.rightSideShowTimestamp" on-change="ctrl.refresh()">
 			</gf-form-switch>
 		</div>
 	</div>
@@ -68,36 +78,36 @@
 					<tip>Font of the trend value</tip>
 				</label>
 			<div class="gf-form-select-wrapper width-10">
-				<select class="gf-form-input" ng-model="ctrl.panel.trendstat.rightSideValueFontType" ng-options="f for f in ctrl.fontTypes" ng-change="ctrl.render()"></select>
+				<select class="gf-form-input" ng-model="ctrl.panel.trendstat.rightSideValueFontType" ng-options="f for f in ctrl.fontTypes" ng-change="ctrl.refresh()"></select>
 			</div>
 			<label class="gf-form-label width-6">Font Size</label>
 			<div class="gf-form-select-wrapper width-6">
-				<select class="gf-form-input" ng-model="ctrl.panel.trendstat.rightSideValueFontSize" ng-options="f for f in ctrl.fontSizesPct" ng-change="ctrl.render()"></select>
+				<select class="gf-form-input" ng-model="ctrl.panel.trendstat.rightSideValueFontSize" ng-options="f for f in ctrl.fontSizesPct" ng-change="ctrl.refresh()"></select>
 			</div>
 		</div>
 
 		<div class="gf-form">
 			<label class="gf-form-label width-7">Prefix</label>
-			<input type="text" class="gf-form-input width-10" ng-model="ctrl.panel.trendstat.rightSidePrefix" ng-change="ctrl.render()" ng-model-onblur>
+			<input type="text" class="gf-form-input width-10" ng-model="ctrl.panel.trendstat.rightSidePrefix" ng-change="ctrl.refresh()" ng-model-onblur>
 			<label class="gf-form-label width-6">Font size</label>
 			<div class="gf-form-select-wrapper width-6">
-				<select class="gf-form-input" ng-model="ctrl.panel.trendstat.rightSidePrefixFontSize" ng-options="f for f in ctrl.fontSizesPct" ng-change="ctrl.render()"></select>
+				<select class="gf-form-input" ng-model="ctrl.panel.trendstat.rightSidePrefixFontSize" ng-options="f for f in ctrl.fontSizesPct" ng-change="ctrl.refresh()"></select>
 			</div>
 		</div>
 
 		<div class="gf-form">
 			<label class="gf-form-label width-7">Postfix</label>
-			<input type="text" class="gf-form-input width-10" ng-model="ctrl.panel.trendstat.rightSidePostfix" ng-change="ctrl.render()" ng-model-onblur>
+			<input type="text" class="gf-form-input width-10" ng-model="ctrl.panel.trendstat.rightSidePostfix" ng-change="ctrl.refresh()" ng-model-onblur>
 			<label class="gf-form-label width-6">Font size</label>
 			<div class="gf-form-select-wrapper width-6">
-				<select class="input-small gf-form-input" ng-model="ctrl.panel.trendstat.rightSidePostfixFontSize" ng-options="f for f in ctrl.fontSizesPct" ng-change="ctrl.render()"></select>
+				<select class="input-small gf-form-input" ng-model="ctrl.panel.trendstat.rightSidePostfixFontSize" ng-options="f for f in ctrl.fontSizesPct" ng-change="ctrl.refresh()"></select>
 			</div>
 		</div>
 
 		<div class="gf-form">
 			<div class="gf-form max-width-11">
 				<label class="gf-form-label width-7">Decimals</label>
-				<input type="number" class="gf-form-input width-5" placeholder="auto" data-placement="right" bs-tooltip="'Override automatic decimal precision'" ng-model="ctrl.panel.trendstat.rightSideDecimals" ng-change="ctrl.render()" ng-model-onblur>
+				<input type="number" class="gf-form-input width-5" placeholder="auto" data-placement="right" bs-tooltip="'Override automatic decimal precision'" ng-model="ctrl.panel.trendstat.rightSideDecimals" ng-change="ctrl.refresh()" ng-model-onblur>
 			</div>
 		</div>
 	</div>
@@ -107,9 +117,9 @@
 		<h5 class="section-heading">Coloring</h5>
 		<div class="gf-form-inline">
 			<div class="gf-form-inline">
-				<gf-form-switch class="gf-form" label-class="width-9" label="Background" checked="ctrl.panel.trendstat.colorBackground" on-change="ctrl.render()"></gf-form-switch>
-				<gf-form-switch class="gf-form" label-class="width-4" label="Value" checked="ctrl.panel.trendstat.colorValue" on-change="ctrl.render()"></gf-form-switch>
-				<gf-form-switch class="gf-form" label-class="width-4" label="Icon" checked="ctrl.panel.trendstat.colorIcon" on-change="ctrl.render()"></gf-form-switch>
+				<gf-form-switch class="gf-form" label-class="width-9" label="Background" checked="ctrl.panel.trendstat.colorBackground" on-change="ctrl.refresh()"></gf-form-switch>
+				<gf-form-switch class="gf-form" label-class="width-4" label="Value" checked="ctrl.panel.trendstat.colorValue" on-change="ctrl.refresh()"></gf-form-switch>
+				<gf-form-switch class="gf-form" label-class="width-4" label="Icon" checked="ctrl.panel.trendstat.colorIcon" on-change="ctrl.refresh()"></gf-form-switch>
 			</div>
 		</div>
 		<div class="gf-form-inline">
@@ -117,7 +127,7 @@
 				<label class="gf-form-label width-9">Thresholds
 						<tip>Define two threshold values&lt;br /&gt; 50,80 will produce: &lt;50 = Green, 50:80 = Yellow, &gt;80 = Red</tip>
 					</label>
-				<input type="text" class="gf-form-input" ng-model="ctrl.panel.trendstat.thresholds" ng-blur="ctrl.render()" placeholder="50,80"></input>
+				<input type="text" class="gf-form-input" ng-model="ctrl.panel.trendstat.thresholds" ng-blur="ctrl.refresh()" placeholder="50,80"></input>
 			</div>
 			<div class="gf-form">
 				<span class="gf-form-label">
@@ -126,13 +136,13 @@
 					</a>
 				</span>
 				<span class="gf-form-label">
-					<spectrum-picker ng-model="ctrl.panel.trendstat.colors[0]" ng-change="ctrl.render()" ></spectrum-picker>
+					<spectrum-picker ng-model="ctrl.panel.trendstat.colors[0]" ng-change="ctrl.refresh()" ></spectrum-picker>
 				</span>
 				<span class="gf-form-label">
-					<spectrum-picker ng-model="ctrl.panel.trendstat.colors[1]" ng-change="ctrl.render()" ></spectrum-picker>
+					<spectrum-picker ng-model="ctrl.panel.trendstat.colors[1]" ng-change="ctrl.refresh()" ></spectrum-picker>
 				</span>
 				<span class="gf-form-label">
-					<spectrum-picker ng-model="ctrl.panel.trendstat.colors[2]" ng-change="ctrl.render()" ></spectrum-picker>
+					<spectrum-picker ng-model="ctrl.panel.trendstat.colors[2]" ng-change="ctrl.refresh()" ></spectrum-picker>
 				</span>
 			</div>
 		</div>
@@ -141,13 +151,13 @@
 		<div class="gf-form-inline">
 			<div class="gf-form">
 				<label class="gf-form-label width-9">Trend Up
-					<tip>TODO</tip>
+					<tip>Icon Displayed when value is trending up</tip>
 				</label>
 				<div class="gf-form-select-wrapper width-14">
-					<select class="trendstat-icons input-small gf-form-input" ng-model="ctrl.panel.trendstat.trendIconUp" ng-options="f.value as f.text for f in ctrl.trendStatIconsUp" ng-change="ctrl.render()"></select>
+					<select class="trendstat-icons input-small gf-form-input" ng-model="ctrl.panel.trendstat.trendIconUp" ng-options="f.value as f.text for f in ctrl.trendStatIconsUp" ng-change="ctrl.refresh()"></select>
 				</div>
-				<div class="gf-form-inline">
-					<label class="gf-form-label width-3">
+				<div class="gf-form-inline" style="text-align: center;">
+					<label class="gf-form-label width-6">
 					<i style="font-size: {{ctrl.panel.trendstat.trendUpFontSize}};" class="fa {{ctrl.panel.trendstat.trendIconUp}}"></i>
 					</label>
 				</div>
@@ -155,26 +165,26 @@
 			<div class="gf-form">
 				<label class="gf-form-label width-6">Fill Color</label>
 				<span class="gf-form-label">
-				<spectrum-picker ng-model="ctrl.panel.trendstat.trendUpFillColor" ng-change="ctrl.render()" ></spectrum-picker>
+				<spectrum-picker ng-model="ctrl.panel.trendstat.trendUpFillColor" ng-change="ctrl.refresh()" ></spectrum-picker>
 			</span>
 			</div>
 			<div class="gf-form">
 				<label class="gf-form-label width-6">Font Size</label>
 				<div class="gf-form-select-wrapper width-6">
-					<select class="gf-form-input" ng-model="ctrl.panel.trendstat.trendUpFontSize" ng-options="f for f in ctrl.fontSizesPct" ng-change="ctrl.render()"></select>
+					<select class="gf-form-input" ng-model="ctrl.panel.trendstat.trendUpFontSize" ng-options="f for f in ctrl.fontSizesPct" ng-change="ctrl.refresh()"></select>
 				</div>
 			</div>
 		</div>
 		<div class="gf-form-inline">
 			<div class="gf-form">
 				<label class="gf-form-label width-9">Trend Down
-					<tip>TODO</tip>
+					<tip>Icon Displayed when value is trending down</tip>
 				</label>
 				<div class="gf-form-select-wrapper width-14">
-					<select class="input-small gf-form-input" ng-model="ctrl.panel.trendstat.trendIconDown" ng-options="f.value as f.text for f in ctrl.trendStatIconsDown" ng-change="ctrl.render()"></select>
+					<select class="input-small gf-form-input" ng-model="ctrl.panel.trendstat.trendIconDown" ng-options="f.value as f.text for f in ctrl.trendStatIconsDown" ng-change="ctrl.refresh()"></select>
 				</div>
-				<div class="gf-form-inline">
-					<label class="gf-form-label width-3">
+				<div class="gf-form-inline" style="text-align: center;">
+					<label class="gf-form-label width-6">
 					<i style="font-size: {{ctrl.panel.trendstat.trendDownFontSize}};" class="fa {{ctrl.panel.trendstat.trendIconDown}}"></i>
 					</label>
 				</div>
@@ -182,37 +192,37 @@
 			<div class="gf-form">
 				<label class="gf-form-label width-6">Fill Color</label>
 				<span class="gf-form-label">
-				<spectrum-picker ng-model="ctrl.panel.trendstat.trendDownFillColor" ng-change="ctrl.render()" ></spectrum-picker>
+				<spectrum-picker ng-model="ctrl.panel.trendstat.trendDownFillColor" ng-change="ctrl.refresh()" ></spectrum-picker>
 			</span>
 			</div>
 			<div class="gf-form">
 				<label class="gf-form-label width-6">Font Size</label>
 				<div class="gf-form-select-wrapper width-6">
-					<select class="gf-form-input" ng-model="ctrl.panel.trendstat.trendDownFontSize" ng-options="f for f in ctrl.fontSizesPct" ng-change="ctrl.render()"></select>
+					<select class="gf-form-input" ng-model="ctrl.panel.trendstat.trendDownFontSize" ng-options="f for f in ctrl.fontSizesPct" ng-change="ctrl.refresh()"></select>
 				</div>
 			</div>
 		</div>
 		<div class="gf-form">
 			<label class="gf-form-label width-9">Trend None
-					<tip>TODO</tip>
+					<tip>Icon Displayed when value has not changed since previous datapoint</tip>
 				</label>
 			<div class="gf-form-select-wrapper width-14">
-				<select class="input-small gf-form-input" ng-model="ctrl.panel.trendstat.trendIconNone" ng-options="f.value as f.text for f in ctrl.trendStatIconsNone" ng-change="ctrl.render()"></select>
+				<select class="input-small gf-form-input" ng-model="ctrl.panel.trendstat.trendIconNone" ng-options="f.value as f.text for f in ctrl.trendStatIconsNone" ng-change="ctrl.refresh()"></select>
 			</div>
-			<div class="gf-form-inline">
-				<label class="gf-form-label width-3">
+			<div class="gf-form-inline" style="text-align: center;">
+				<label class="gf-form-label width-6">
 				<i style="font-size: {{ctrl.panel.trendstat.trendNoneFontSize}};" class="fa {{ctrl.panel.trendstat.trendIconNone}}"></i>
 				</label>
 			</div>
 			<div class="gf-form">
 				<label class="gf-form-label width-6">Fill Color</label>
 				<span class="gf-form-label">
-				<spectrum-picker ng-model="ctrl.panel.trendstat.trendNoneFillColor" ng-change="ctrl.render()" ></spectrum-picker>
+				<spectrum-picker ng-model="ctrl.panel.trendstat.trendNoneFillColor" ng-change="ctrl.refresh()" ></spectrum-picker>
 			</span>
 			</div>
 			<label class="gf-form-label width-6">Font Size</label>
 			<div class="gf-form-select-wrapper width-6">
-				<select class="gf-form-input" ng-model="ctrl.panel.trendstat.trendNoneFontSize" ng-options="f for f in ctrl.fontSizesPct" ng-change="ctrl.render()"></select>
+				<select class="gf-form-input" ng-model="ctrl.panel.trendstat.trendNoneFontSize" ng-options="f for f in ctrl.fontSizesPct" ng-change="ctrl.refresh()"></select>
 			</div>
 		</div>
 	</div>

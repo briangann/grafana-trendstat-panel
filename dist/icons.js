@@ -217,6 +217,15 @@ System.register([], function (_export, _context) {
         text: 'Empty',
         value: 'fa-fw'
       }, {
+        text: 'Arrow Circle Left',
+        value: 'fa-arrow-circle-left'
+      }, {
+        text: 'Arrow Circle O Left',
+        value: 'fa-arrow-circle-o-left'
+      }, {
+        text: 'Arrow Left',
+        value: 'fa-arrow-left'
+      }, {
         text: 'Check',
         value: 'fa-check'
       }, {
@@ -231,6 +240,12 @@ System.register([], function (_export, _context) {
       }, {
         text: 'Check Square Filled',
         value: 'fa-check-square'
+      }, {
+        text: 'Chevron Circle Left',
+        value: 'fa-arrow-circle-left'
+      }, {
+        text: 'Chevron Left',
+        value: 'fa-arrow-left'
       }, {
         text: 'Circle',
         value: 'fa-circle'

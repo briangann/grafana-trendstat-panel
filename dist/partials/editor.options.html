@@ -11,6 +11,12 @@
 				<div class="gf-form-select-wrapper width-6">
 					<select class="gf-form-input" ng-model="ctrl.panel.valueFontSize" ng-options="f for f in ctrl.fontSizesPct" ng-change="ctrl.render()"></select>
 				</div>
+				<label class="gf-form-label width-7">Font
+						<tip>Font of value</tip>
+					</label>
+				<div class="gf-form-select-wrapper width-10">
+					<select class="gf-form-input" ng-model="ctrl.panel.valueFontType" ng-options="f for f in ctrl.fontTypes" ng-change="ctrl.render()"></select>
+				</div>
 		</div>
 
 		<div class="gf-form">
@@ -49,28 +55,23 @@
 		</div>
 		<div class="gf-form-inline">
 			<div class="gf-form max-width-21">
-				<label class="gf-form-label width-10">Thresholds
+				<label class="gf-form-label width-8">Thresholds
 					<tip>Define two threshold values&lt;br /&gt; 50,80 will produce: &lt;50 = Green, 50:80 = Yellow, &gt;80 = Red</tip>
 				</label>
 				<input type="text" class="gf-form-input" ng-model="ctrl.panel.thresholds" ng-blur="ctrl.render()" placeholder="50,80"></input>
 			</div>
 
 			<div class="gf-form">
-				<span class="gf-form-label">
+      <label class="gf-form-label width-8">Colors</label>
+      <span class="gf-form-label" ng-repeat="color in ctrl.panel.colors track by $index">
+        <color-picker color="color" onChange="ctrl.onColorChange($index)"></color-picker>
+      </span>
+      <span class="gf-form-label">
         <a  ng-click="ctrl.invertColorOrder()">
-						<i class="fa fa-arrows-h"></i>
+          Invert
         </a>
       </span>
-				<span class="gf-form-label">
-        <spectrum-picker ng-model="ctrl.panel.colors[0]" ng-change="ctrl.render()" ></spectrum-picker>
-      </span>
-				<span class="gf-form-label">
-        <spectrum-picker ng-model="ctrl.panel.colors[1]" ng-change="ctrl.render()" ></spectrum-picker>
-      </span>
-				<span class="gf-form-label">
-        <spectrum-picker ng-model="ctrl.panel.colors[2]" ng-change="ctrl.render()" ></spectrum-picker>
-      </span>
-			</div>
+    </div>
 		</div>
 	</div>
 </div>
@@ -104,16 +105,16 @@
 				</div>
 				<div ng-if="ctrl.panel.gauge.show">
 					<div class="gf-form">
-						<label class="gf-form-label width-8">Min</label>
-						<input type="number" class="gf-form-input width-6" placeholder="0" data-placement="right" ng-model="ctrl.panel.gauge.minValue" ng-change="ctrl.refresh()" ng-model-onblur>
+						<label class="gf-form-label width-10">Min</label>
+						<input type="number" class="gf-form-input width-8" placeholder="0" data-placement="right" ng-model="ctrl.panel.gauge.minValue" ng-change="ctrl.refresh()" ng-model-onblur>
 						<label class="gf-form-label alert-state-critical" ng-show="ctrl.invalidGaugeRange">
           &nbsp; <i class="fa fa-warning"></i>
           Min value is bigger than max.
         </label>
 					</div>
 					<div class="gf-form">
-						<label class="gf-form-label width-8">Max</label>
-						<input type="number" class="gf-form-input width-6" placeholder="0" data-placement="right" ng-model="ctrl.panel.gauge.maxValue" ng-change="ctrl.refresh()" ng-model-onblur>
+						<label class="gf-form-label width-10">Max</label>
+						<input type="number" class="gf-form-input width-8" placeholder="0" data-placement="right" ng-model="ctrl.panel.gauge.maxValue" ng-change="ctrl.refresh()" ng-model-onblur>
 					</div>
 					<gf-form-switch class="gf-form" label-class="width-10" label="Threshold labels" checked="ctrl.panel.gauge.thresholdLabels" on-change="ctrl.render()"></gf-form-switch>
 					<gf-form-switch class="gf-form" label-class="width-10" label="Threshold markers" checked="ctrl.panel.gauge.thresholdMarkers" on-change="ctrl.render()"></gf-form-switch>
@@ -123,20 +124,40 @@
 			<div class="section gf-form-group">
 				<h5 class="section-heading">Subtext</h5>
 					<div class="gf-form max-width-40">
-						<gf-form-switch class="gf-form" label-class="width-4" label="Show" checked="ctrl.panel.trendstat.leftSideShowSubtext" on-change="ctrl.render()">
+						<gf-form-switch class="gf-form" label-class="width-9" label="Show Subtext"
+						  checked="ctrl.panel.trendstat.leftSideShowSubtext"
+							on-change="ctrl.render()">
 						</gf-form-switch>
 						<div class="gf-form" ng-if="ctrl.panel.trendstat.leftSideShowSubtext">
-								<input type="text" class="gf-form-input width-26" ng-model="ctrl.panel.trendstat.leftSideSubtext" ng-blur="ctrl.render()"></input>
+								<input type="text" class="gf-form-input width-26" ng-model="ctrl.panel.trendstat.leftSideSubtext"
+								  ng-blur="ctrl.render()">
+								</input>
 						</div>
 					</div>
 					<div class="gf-form" ng-if="ctrl.panel.trendstat.leftSideShowSubtext">
-						<gf-form-switch class="gf-form" label-class="width-9" label="Show Timestamp" checked="ctrl.panel.trendstat.leftSideShowTimestamp" on-change="ctrl.render()">
+						<gf-form-switch class="gf-form" label-class="width-9" label="Show Timestamp"
+						  checked="ctrl.panel.trendstat.leftSideShowTimestamp"
+							on-change="ctrl.render()">
 						</gf-form-switch>
 					</div>
-					<div class="gf-form-inline">
-						<label class="gf-form-label width-6">Font Size</label>
-						<div class="gf-form-select-wrapper width-6">
-							<select class="gf-form-input" ng-model="ctrl.panel.trendstat.leftSideSubtextFontSize" ng-options="f for f in ctrl.fontSizesPct" ng-change="ctrl.render()"></select>
+					<div class="gf-form">
+						<label class="gf-form-label width-9">Font Size</label>
+						<div class="gf-form-select-wrapper width-10">
+							<select class="gf-form-input" ng-model="ctrl.panel.trendstat.leftSideSubtextFontSize"
+							  ng-options="f for f in ctrl.fontSizesPct"
+								ng-change="ctrl.render()">
+							</select>
+						</div>
+					</div>
+					<div class="gf-form">
+						<label class="gf-form-label width-9">Font
+							<tip>Font of subtext</tip>
+						</label>
+						<div class="gf-form-select-wrapper width-10">
+							<select class="gf-form-input" ng-model="ctrl.panel.trendstat.leftSideSubtextFontType"
+							  ng-options="f for f in ctrl.fontTypes"
+								ng-change="ctrl.render()">
+							</select>
 						</div>
 					</div>
 			</div> <!-- end of subtext -->
